@@ -1,0 +1,87 @@
+<h1>Registrar Nuevo Cargo</h1>
+<hr />
+
+<div class="mt-1 mb-3">
+  <nz-alert
+    nzType="success"
+    nzMessage="Cargo ingresado con éxito. Redireccionando a Cargos del Sistema."
+    nzShowIcon
+    *ngIf="status == 'success'"
+  ></nz-alert>
+
+  <nz-alert
+    nzType="error"
+    nzMessage="Cargo no ingresado! Redireccionando a Cargos del Sistema."
+    nzShowIcon
+    *ngIf="status == 'error'"
+  ></nz-alert>
+</div>
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!flag_pagina_cargada"
+></nz-spin>
+
+<form
+  nz-form
+  #cargoForm="ngForm"
+  *ngIf="flag_pagina_cargada"
+  (ngSubmit)="onSubmit(cargoForm)"
+>
+  <nz-form-item>
+    <nz-form-label><b>Nombre del cargo</b></nz-form-label>
+
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input
+        nz-input
+        type="text"
+        name="cargo"
+        placeholder="Cargo"
+        #cargo="ngModel"
+        [(ngModel)]="cargo2.cargo"
+        required
+      />
+      <small
+        class="invalid-feedback d-block"
+        *ngIf="!cargo.valid && cargo.touched"
+        >El cargo no es válido</small
+      >
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label><b>Estado</b></nz-form-label>
+
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select
+        name="estado"
+        #estado="ngModel"
+        [(ngModel)]="cargo2.estado"
+        required
+      >
+        <nz-option nzValue="H" nzLabel="Habilitado"></nz-option>
+        <nz-option nzValue="D" nzLabel="Deshabilitado"></nz-option>
+      </nz-select>
+
+      <small
+        class="invalid-feedback d-block"
+        *ngIf="!estado.valid && estado.touched"
+        >El estado no es válido
+      </small>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="cargoForm.invalid || flag_form_send"
+      >
+        Guardar
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

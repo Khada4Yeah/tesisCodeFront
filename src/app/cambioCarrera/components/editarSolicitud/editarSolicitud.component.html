@@ -1,0 +1,143 @@
+<div class="scrollable-container" #target>
+  <h1>Edición de Solicitud para Cambio de Carrera</h1>
+  <hr />
+
+  <nz-spin
+    class="example"
+    nzSimple
+    [nzSize]="'large'"
+    *ngIf="!flag_pagina_cargada"
+  ></nz-spin>
+
+  <form
+    nz-form
+    *ngIf="flag_pagina_cargada"
+    [formGroup]="validacionFormulario"
+    (submit)="guardarDatos()"
+  >
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="escuelasOrigen">
+        <b>Seleccione su carrera</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-select
+          nzPlaceHolder="Seleccione su carrera"
+          formControlName="escuelasOrigen"
+          id="escuelasOrigen"
+          (nzOpenChange)="getMallaEstudiante($event)"
+        >
+          <nz-option
+            *ngFor="let iescuelaO of escuela_estudiante"
+            [nzLabel]="iescuelaO.nombre"
+            [nzValue]="iescuelaO.idescuela"
+          ></nz-option
+        ></nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="mallasOrigen">
+        <b>Seleccione su malla</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-select
+          nzPlaceHolder="Seleccione su malla"
+          formControlName="mallasOrigen"
+          id="mallasOrigen"
+        >
+          <nz-option
+            *ngFor="let imalla of malla_estudiante"
+            [nzLabel]="imalla.malla"
+            [nzValue]="imalla.idmalla"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="modalidad">
+        <b>Seleccione la modalidad</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-select
+          nzPlaceHolder="Seleccione la modalidad"
+          formControlName="modalidad"
+          id="modalidad"
+        >
+          <nz-option nzLabel="PRESENCIAL" nzValue="1"></nz-option>
+          <nz-option nzLabel="VIRTUAL" nzValue="2"></nz-option>
+          <nz-option nzLabel="HIBRIDA" nzValue="3"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="escuelaDestino">
+        <b>Seleccione la carrera de destino</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-select
+          nzShowSearch
+          nzPlaceHolder="Seleccione su carrera"
+          formControlName="escuelaDestino"
+          id="escuelaDestino"
+          (nzOpenChange)="habilitaBtnVerMaterias()"
+        >
+          <nz-option
+            *ngFor="let iescuelaD of escuelas"
+            [nzLabel]="iescuelaD.nombre"
+            [nzValue]="iescuelaD.idescuela"
+          ></nz-option
+        ></nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button
+      nz-button
+      [disabled]="btn_ver_materias_disabled"
+      (click)="getMaterias($event)"
+      style="margin-bottom: 1em"
+    >
+      Ver materias
+    </button>
+
+    <nz-form-item>
+      <nz-form-control>
+        <nz-transfer
+          [nzDisabled]="transfer_materias_disabled"
+          nzShowSearch
+          [nzTitles]="['Lista Materias', 'Escogidas']"
+          [nzListStyle]="{ 'width.px': 250, 'height.px': 300 }"
+          [nzDataSource]="listaMateriasTransfer"
+          [nzRender]="render"
+          (nzChange)="cambioTransfer($event)"
+        >
+          <ng-template #render let-item
+            >{{ item.title }}-{{ item.description }}
+          </ng-template>
+        </nz-transfer>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button
+      nz-button
+      [disabled]="btn_agregar_materias_disabled"
+      (click)="addMateriasHomologar($event)"
+      style="margin-bottom: 1em"
+    >
+      Agregar Materias
+    </button>
+
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [nzLoading]="btn_form_loading">
+          Guardar Cambios
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

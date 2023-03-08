@@ -1,0 +1,205 @@
+<h1>Solicitudes de Cambio de Universidad</h1>
+
+<hr />
+
+<nz-tabset>
+  <nz-tab nzTitle="En Revisión"
+    ><nz-spin
+      class="example"
+      nzSimple
+      [nzSize]="'large'"
+      *ngIf="!pagina_cargada"
+    ></nz-spin>
+
+    <nz-table
+      #tablaSolicitudesEnRevision
+      [nzData]="solicitudes_separadas.en_revision"
+      *ngIf="pagina_cargada"
+      nzSize="small"
+      [nzPageSize]="5"
+      [nzScroll]="{ y: '55vh', x: 'auto' }"
+    >
+      <thead>
+        <tr>
+          <th>Apellidos</th>
+          <th>Nombres</th>
+          <th>Escuela Origen</th>
+          <th>Escuela Destino</th>
+          <th>Modalidad</th>
+          <th>Fecha de Creación Solicitud</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of tablaSolicitudesEnRevision.data">
+          <td>{{ data.apellidos }}</td>
+          <td>{{ data.nombres }}</td>
+          <td>{{ data.escuela_origen }}</td>
+          <td>{{ data.escuela_destino }}</td>
+          <td>{{ data.modalidad }}</td>
+          <td>{{ data.fc }}</td>
+          <td>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="detailSolicitudes(data.id_solicitud)"
+            >
+              Detalles
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+  <nz-tab nzTitle="Pendientes"
+    ><nz-spin
+      class="example"
+      nzSimple
+      [nzSize]="'large'"
+      *ngIf="!pagina_cargada"
+    ></nz-spin>
+
+    <nz-table
+      #tablaSolicitudesPendientes
+      [nzData]="solicitudes_separadas.pendientes"
+      *ngIf="pagina_cargada"
+      nzSize="small"
+      [nzPageSize]="5"
+      [nzScroll]="{ y: '55vh', x: 'auto' }"
+    >
+      <thead>
+        <tr>
+          <th>Apellidos</th>
+          <th>Nombres</th>
+          <th>Escuela Origen</th>
+          <th>Escuela Destino</th>
+          <th>Modalidad</th>
+          <th>Fecha de Creación Solicitud</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of tablaSolicitudesPendientes.data">
+          <td>{{ data.apellidos }}</td>
+          <td>{{ data.nombres }}</td>
+          <td>{{ data.escuela_origen }}</td>
+          <td>{{ data.escuela_destino }}</td>
+          <td>{{ data.modalidad }}</td>
+          <td>{{ data.fc }}</td>
+          <td>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="detailSolicitudes(data.id_solicitud)"
+            >
+              Detalles
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+  <nz-tab nzTitle="R. Docentes"
+    ><nz-spin
+      class="example"
+      nzSimple
+      [nzSize]="'large'"
+      *ngIf="!pagina_cargada"
+    ></nz-spin>
+
+    <nz-table
+      #tablaSolicitudesRDocentes
+      [nzData]="solicitudes_separadas.revisadas_docente"
+      *ngIf="pagina_cargada"
+      nzSize="small"
+      [nzPageSize]="5"
+      [nzScroll]="{ y: '55vh', x: 'auto' }"
+    >
+      <thead>
+        <tr>
+          <th>Apellidos</th>
+          <th>Nombres</th>
+          <th>Escuela Origen</th>
+          <th>Escuela Destino</th>
+          <th>Modalidad</th>
+          <th>Fecha de Creación Solicitud</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of tablaSolicitudesRDocentes.data">
+          <td>{{ data.apellidos }}</td>
+          <td>{{ data.nombres }}</td>
+          <td>{{ data.escuela_origen }}</td>
+          <td>{{ data.escuela_destino }}</td>
+          <td>{{ data.modalidad }}</td>
+          <td>{{ data.fc }}</td>
+          <td>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="detailSolicitudEnd(data.id_solicitud)"
+            >
+              Detalles
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+  <nz-tab nzTitle="Completados"
+    ><nz-spin
+      class="example"
+      nzSimple
+      [nzSize]="'large'"
+      *ngIf="!pagina_cargada"
+    ></nz-spin>
+
+    <nz-table
+      #tablaSolicitudesCompletados
+      [nzData]="solicitudes_separadas.completados"
+      *ngIf="pagina_cargada"
+      nzSize="small"
+      [nzPageSize]="5"
+      [nzScroll]="{ y: '55vh', x: 'auto' }"
+    >
+      <thead>
+        <tr>
+          <th>Apellidos</th>
+          <th>Nombres</th>
+          <th>Escuela Origen</th>
+          <th>Escuela Destino</th>
+          <th>Modalidad</th>
+          <th>Fecha de Creación Solicitud</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of tablaSolicitudesCompletados.data">
+          <td>{{ data.apellidos }}</td>
+          <td>{{ data.nombres }}</td>
+          <td>{{ data.escuela_origen }}</td>
+          <td>{{ data.escuela_destino }}</td>
+          <td>{{ data.modalidad }}</td>
+          <td>{{ data.fc }}</td>
+          <td>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="detailSolicitudEnd(data.id_solicitud)"
+            >
+              Detalles
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+</nz-tabset>

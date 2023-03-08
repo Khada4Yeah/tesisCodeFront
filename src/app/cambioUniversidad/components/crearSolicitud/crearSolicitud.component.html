@@ -1,0 +1,164 @@
+<div class="scrollable-container" #target>
+  <h1>Creación de Solicitud para Cambio de Carrera</h1>
+  <hr />
+
+  <nz-spin
+    class="example"
+    nzSimple
+    [nzSize]="'large'"
+    *ngIf="!pagina_cargada"
+  ></nz-spin>
+
+  <div *ngIf="pagina_cargada && flag_datos_estudiante == false">
+    <h2 style="color: crimson">Primero debes llenar tus datos</h2>
+  </div>
+
+  <div *ngIf="pagina_cargada && flag_permite_crear_solicitud == false">
+    <h2 style="color: crimson">Ya tienes activa una solicitud</h2>
+  </div>
+
+  <form
+    nz-form
+    #solicitudForm="ngForm"
+    *ngIf="
+      pagina_cargada && flag_datos_estudiante && flag_permite_crear_solicitud
+    "
+    (ngSubmit)="onSubmit()"
+  >
+    <nz-form-item>
+      <nz-form-label><b>Seleccione su universidad</b></nz-form-label>
+
+      <nz-form-control>
+        <nz-select
+          nzShowSearch
+          name="universidadOrigen"
+          #universidadOrigen="ngModel"
+          nzPlaceHolder="Seleccione una universidad"
+          [(ngModel)]="solicitud.universidades_id"
+          [disabled]="flag_habilita_materias"
+        >
+          <nz-option
+            *ngFor="let iuniversidad of universidades"
+            [nzLabel]="iuniversidad.nombre"
+            [nzValue]="iuniversidad.iduniversidad"
+          ></nz-option>
+        </nz-select>
+        <small
+          class="invalid-feedback d-block"
+          *ngIf="solicitud.universidades_id == 0 && universidadOrigen.touched"
+        >
+          Seleccione la universidad...
+        </small>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>
+        <b>Seleccione la modalidad</b>
+      </nz-form-label>
+
+      <nz-form-control>
+        <nz-select
+          name="modalidad"
+          #modalidad="ngModel"
+          nzPlaceHolder="Seleccione la modalidad"
+          [(ngModel)]="solicitud.modalidad1_id"
+          [disabled]="flag_habilita_materias"
+        >
+          <nz-option nzLabel="PRESENCIAL" nzValue="1"></nz-option>
+          <nz-option nzLabel="VIRTUAL" nzValue="2"></nz-option>
+          <nz-option nzLabel="HIBRIDA" nzValue="3"></nz-option>
+        </nz-select>
+        <small
+          class="invalid-feedback d-block"
+          *ngIf="solicitud.modalidad1_id == 0 && modalidad.touched"
+        >
+          Seleccione la modalidad...
+        </small>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>
+        <b>Seleccione la carrera de destino</b>
+      </nz-form-label>
+
+      <nz-form-control>
+        <nz-select
+          nzShowSearch
+          name="carreraDestino"
+          #carreraDestino="ngModel"
+          nzPlaceHolder="Seleccione una carrera"
+          [(ngModel)]="solicitud.escuelas_destino_id"
+          [disabled]="flag_habilita_materias"
+          (ngModelChange)="habilitaBtnVerMaterias($event)"
+        >
+          <nz-option
+            *ngFor="let iescuelaD of escuelas"
+            [nzLabel]="iescuelaD.nombre"
+            [nzValue]="iescuelaD.idescuela"
+          ></nz-option
+        ></nz-select>
+        <small
+          class="invalid-feedback d-block"
+          *ngIf="solicitud.escuelas_destino_id == 0 && carreraDestino.touched"
+        >
+          Seleccione la carrera...
+        </small>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div>
+      <button
+        nz-button
+        (click)="getMaterias($event)"
+        [disabled]="!flag_habilta_ver_materias"
+      >
+        Ver Materias
+      </button>
+    </div>
+
+    <br />
+
+    <nz-form-item>
+      <nz-form-control>
+        <nz-transfer
+          [disabled]="!flag_habilita_materias"
+          [nzDataSource]="list"
+          nzShowSearch
+          [nzTitles]="['Lista Materias', 'Escogidas']"
+          [nzListStyle]="{ 'width.px': 250, 'height.px': 300 }"
+          [nzRender]="render"
+          (nzChange)="change($event)"
+        >
+          <ng-template #render let-item
+            >{{ item.title }}-{{ item.description }}
+          </ng-template>
+        </nz-transfer>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div>
+      <button
+        nz-button
+        [disabled]="!flag_habilita_agg_materias"
+        (click)="onClickMateriaButton($event)"
+      >
+        Agregar Materias
+      </button>
+    </div>
+    <br />
+
+    <nz-form-item>
+      <nz-form-control>
+        <button
+          nz-button
+          nzType="primary"
+          [disabled]="flag_deshabilita_enviar_form"
+        >
+          Enviar Solicitud
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

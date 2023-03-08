@@ -1,0 +1,37 @@
+[nz-form] {
+  max-width: 700px;
+}
+
+nz-form-label {
+  width: 160px;
+  text-align: left;
+}
+
+[nz-input] {
+  max-width: 400px;
+}
+
+nz-input-group {
+  max-width: 200px;
+}
+
+.contenido {
+  margin: 30px auto;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.39);
+  background-color: rgba(219, 219, 219, 0.32);
+}
+
+.logo {
+  text-align: center;
+  height: 200px;
+  line-height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  width: 150px;
+  margin-right: 8px;
+}

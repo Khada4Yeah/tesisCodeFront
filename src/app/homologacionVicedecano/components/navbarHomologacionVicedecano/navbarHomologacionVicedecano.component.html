@@ -1,0 +1,106 @@
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+      <a [routerLink]="['/homologacionVicedecano/solicitudesCambioCarrera']">
+        <img src="assets/images/logo-actual.png" alt="logo" />
+        <h1>Sistema de Homologación</h1>
+      </a>
+    </div>
+
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li nz-submenu nzOpen nzTitle="Solicitudes" nzIcon="solution">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a
+              [routerLink]="[
+                '/homologacionVicedecano/solicitudesCambioCarrera'
+              ]"
+              >Solicitudes Cambio Carrera</a
+            >
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a
+              [routerLink]="[
+                '/homologacionVicedecano/solicitudesCambioUniversidad'
+              ]"
+              >Solicitudes Cambio Univerisad</a
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li nz-submenu nzOpen nzTitle="Sesión" nzIcon="user">
+        <ul>
+          <li
+            nz-menu-item
+            nzMatchRouter
+            style="text-decoration: underline"
+            (click)="showModal()"
+          >
+            Cambiar Perfil
+          </li>
+          <nz-modal
+            [(nzVisible)]="mostrarModal"
+            nzTitle="Cambiar Perfil"
+            (nzOnCancel)="handleCancel()"
+            (nzOnOk)="handleOk()"
+          >
+            <ng-container *nzModalContent>
+              <p>
+                <b>{{ nombreUsuario }}</b>
+              </p>
+              <p><b>Seleccione su perfil:</b></p>
+              <nz-select [(ngModel)]="perfil_seleccionado">
+                <nz-option
+                  *ngFor="let item of getPerfilesUsuario()"
+                  [nzValue]="item"
+                  [nzLabel]="item"
+                ></nz-option>
+              </nz-select>
+            </ng-container>
+          </nz-modal>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/homologacionVicedecano/logout/1']"
+              >Cerrar Sesión</a
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          ></i>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

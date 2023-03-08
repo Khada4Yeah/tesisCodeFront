@@ -1,0 +1,44 @@
+<h1>Cargos del Sistema</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!flag_pagina_cargada"
+></nz-spin>
+
+<nz-table
+  *ngIf="flag_pagina_cargada"
+  #basicTable
+  [nzData]="cargos"
+  [nzScroll]="{ y: 'auto' }"
+>
+  <thead>
+    <tr>
+      <th>Cargos</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.cargo }}</td>
+      <td>{{ data.estado }}</td>
+      <td>
+        <button nz-button nzType="primary">
+          <a [routerLink]="['../editarCargo/', data.id]">Editar</a>
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="showConfirm(data.id)"
+        >
+          <a>Eliminar</a>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

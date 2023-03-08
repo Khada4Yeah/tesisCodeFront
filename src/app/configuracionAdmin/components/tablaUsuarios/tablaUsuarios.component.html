@@ -1,0 +1,52 @@
+<h1>Usuarios Del Sistema</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!flag_pagina_cargada"
+></nz-spin>
+
+<nz-table
+  *ngIf="flag_pagina_cargada"
+  #basicTable
+  [nzData]="usuarios"
+  [nzPageSize]="4"
+  nzSize="small"
+  [nzScroll]="{ y: 'auto', x: 'auto' }"
+>
+  <thead>
+    <tr>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Cargo</th>
+      <th nzWidth="25%">Departamento</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.nombres }}</td>
+      <td>{{ data.apellidos }}</td>
+      <td>{{ data.cargo }}</td>
+      <td>{{ data.departamento }}</td>
+      <td>{{ data.estado }}</td>
+      <td style="text-align: center">
+        <button nz-button nzType="primary" (click)="editUsuario(data.id)">
+          <i nz-icon nzType="edit" nzTheme="fill"></i>
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="showConfirm(data.id)"
+        >
+          <i nz-icon nzType="delete" nzTheme="fill"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

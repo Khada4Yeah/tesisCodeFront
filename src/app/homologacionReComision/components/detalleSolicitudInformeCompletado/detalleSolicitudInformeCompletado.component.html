@@ -1,0 +1,94 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada" #target>
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <nz-descriptions
+    nzBordered
+    [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+  >
+    <nz-descriptions-item nzTitle="Apellidos">
+      {{ solicitud_detallada[0].apellidos }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Nombres">
+      {{ solicitud_detallada[0].nombres }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Escuela Origen">
+      {{ solicitud_detallada[0].escuela_origen }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Escuela Destino">
+      {{ solicitud_detallada[0].escuela_destino }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Modalidad">
+      {{ solicitud_detallada[0].modalidad }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Estado Solicitud">
+      {{ solicitud_detallada[0].estado_solicitud }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Fecha Creación">
+      {{ solicitud_detallada[0].fc }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Fecha Actualización">
+      {{ solicitud_detallada[0].fa }}
+    </nz-descriptions-item>
+  </nz-descriptions>
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="5"
+    nzSize="small"
+    [nzScroll]="{ y: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th>Materia</th>
+        <th>Nivel</th>
+        <th>PDF Análisis</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of tablaSolicitudes.data">
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td style="text-align: center">
+          <form>
+            <button
+              nz-button
+              (click)="getPdf(data.pdf_analisis)"
+              [disabled]="btn_pdf_disabled"
+            >
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <br />
+  <!-- 
+  <button nz-button nzType="primary" (click)="">Regresar</button> -->
+</div>

@@ -1,0 +1,109 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada" #target>
+  <h1>Devolución de solicitud para correción</h1>
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="10"
+    nzSize="small"
+    [nzScroll]="{ y: '50vh', x: 'auto' }"
+    nzShowPagination="false"
+  >
+    <thead>
+      <tr>
+        <th></th>
+        <th>Materia/Documento General</th>
+        <th>Nivel</th>
+        <th>PDF</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td
+          [nzChecked]="set_filas_seleccionadas.has(-1)"
+          (nzCheckedChange)="onFilaSeleccionada(-1, $event)"
+        ></td>
+        <td>DOCUMENTO GENERAL</td>
+        <td>N/A</td>
+        <td>
+          <form *ngIf="solicitud_detallada[0].documento_completo !== null">
+            <button
+              type="submit"
+              nz-button
+              [disabled]="btn_pdf_disabled"
+              (click)="getPdf(solicitud_detallada[0].documento_completo)"
+            >
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      <tr *ngFor="let data of tablaSolicitudes.data">
+        <td
+          [nzChecked]="set_filas_seleccionadas.has(data.materia_id)"
+          (nzCheckedChange)="onFilaSeleccionada(data.materia_id, $event)"
+        ></td>
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td>
+          <form *ngIf="data.documento_materia !== null">
+            <button
+              type="submit"
+              nz-button
+              (click)="getPdf(data.documento_materia)"
+              [disabled]="btn_pdf_disabled"
+            >
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <br />
+
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label>
+        <b>Detalles de los errores a corregir</b>
+      </nz-form-label>
+
+      <nz-form-control>
+        <textarea
+          nz-input
+          nzAutosize
+          placeholder="Observaciones"
+          [(ngModel)]="observaciones_formulario"
+          name="observaciones"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <button
+    nz-button
+    nzType="primary"
+    [disabled]="set_filas_seleccionadas.size === 0"
+    (click)="sendParaCorreccion()"
+    [nzLoading]="bt_enviar_loading"
+  >
+    Enviar para correción
+  </button>
+</div>

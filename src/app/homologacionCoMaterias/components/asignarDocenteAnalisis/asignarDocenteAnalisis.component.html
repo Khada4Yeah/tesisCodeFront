@@ -1,0 +1,133 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada">
+  <h1>Asignación de Docentes para Análsis</h1>
+  <br />
+
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="5"
+    nzSize="small"
+    [nzScroll]="{ y: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th>Materia</th>
+        <th nzWidth="8%">Nivel</th>
+        <th nzWidth="8%">PDF</th>
+        <th>Docente Encargado</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of tablaSolicitudes.data">
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td style="text-align: center">
+          <button type="submit" nz-button (click)="getPdf(data.pdf)">
+            <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+          </button>
+          <div *ngIf="data.pdf === null || data.pdf === undefined">
+            <b>Sin archivo</b>
+          </div>
+        </td>
+
+        <td>
+          <input
+            type="text"
+            nz-input
+            readonly
+            *ngIf="data.n_docente !== null"
+            class="espaciado"
+            [value]="data.n_docente"
+          />
+          <input
+            type="text"
+            nz-input
+            readonly
+            *ngIf="data.n_docente === null"
+            value="SIN DOCENTE"
+            class="espaciado"
+          />
+          <br />
+          <button
+            nz-button
+            nzType="primary"
+            (click)="crearModalCambioDocente(tplContent, data.iddepartamento)"
+            [disabled]="flag_asignaciones_finalizadas"
+            class="espaciado-btn-tabla"
+          >
+            Cambiar
+          </button>
+
+          <ng-template #tplContent>
+            <form>
+              <div>
+                <nz-select
+                  nzShowSearch
+                  name="docente"
+                  nzPlaceHolder="Seleccione el docente"
+                  nzSize="default"
+                  [(ngModel)]="id_docente"
+                  nzAllowClear
+                >
+                  <nz-option
+                    *ngFor="let doc of docentes_departamento"
+                    [nzValue]="doc.idpersonal"
+                    [nzLabel]="doc.nombres"
+                  ></nz-option>
+                </nz-select>
+              </div>
+
+              <button
+                type="submit"
+                [disabled]="id_docente === 0"
+                nz-button
+                nzType="primary"
+                (click)="cambiarDocenteAnalisis(data.materia_id)"
+                class="espaciado-btn"
+              >
+                Guardar
+              </button>
+            </form>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="cerrarAsignacionDocente()"
+    [disabled]="flag_asignaciones_finalizadas"
+  >
+    Finalizar asignaciones
+  </button>
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="paginaAnterior()"
+    class="espaciado-btn"
+  >
+    Regresar
+  </button>
+</div>

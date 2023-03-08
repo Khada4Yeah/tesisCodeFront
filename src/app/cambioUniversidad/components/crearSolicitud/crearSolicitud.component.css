@@ -1,0 +1,24 @@
+[nz-form] {
+  max-width: 100vw;
+}
+
+nz-select {
+  max-width: 30vw;
+}
+
+nz-form-label {
+  text-align: left;
+  width: 16vw;
+}
+
+.scrollable-container {
+  height: 88vh;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+.background {
+  padding-top: 60px;
+  height: 300px;
+  background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);
+}

@@ -1,0 +1,11 @@
+.espaciado-btn {
+  margin-bottom: 1em;
+}
+
+textarea {
+  resize: none !important;
+}
+
+nz-select {
+  width: 100%;
+}

@@ -1,0 +1,106 @@
+<h1>Solicitudes Enviadas</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<nz-table
+  #tablaSolicitudes
+  [nzData]="solicitudes"
+  *ngIf="pagina_cargada"
+  [nzScroll]="{ y: 'auto' }"
+>
+  <thead>
+    <tr>
+      <th>Escuela Origen</th>
+      <th>Escuela Destino</th>
+      <th>Modalidad</th>
+      <th>PDF Solicitud</th>
+      <th>Estado Solicitud</th>
+      <th>Observaciones</th>
+      <th>Fecha de Creación</th>
+      <th>Fecha de Actualización</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let data of tablaSolicitudes.data">
+      <td>{{ data.escuela_origen }}</td>
+      <td>{{ data.escuela_destino }}</td>
+      <td>{{ data.modalidad }}</td>
+      <td style="text-align: center">
+        <form *ngIf="data.documento_completo !== null">
+          <button
+            type="submit"
+            nz-button
+            (click)="getPdf(data.documento_completo)"
+            [disabled]="btn_pdf_disabled"
+          >
+            <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+          </button>
+        </form>
+      </td>
+      <td>
+        <div
+          *ngIf="
+            data.estado === 'EN REVISIÓN CM' ||
+            data.estado === 'EN REVISIÓN RC' ||
+            data.estado === 'EN REVISIÓN D' ||
+            data.estado === 'EN REVISIÓN' ||
+            data.estado === 'DEV CM A RC'
+          "
+        >
+          <b>EN REVISIÓN</b>
+        </div>
+
+        <div
+          *ngIf="
+            data.estado === 'ANULADA' ||
+            data.estado === 'RECHAZADA' ||
+            data.estado === 'CORRECIONES'
+          "
+        >
+          <b>{{ data.estado }}</b>
+        </div>
+
+        <div *ngIf="data.estado === 'PENDIENTE'"><b>PENDIENTE</b></div>
+      </td>
+      <td>
+        <div
+          *ngIf="data.estado == 'RECHAZADA' || data.estado === 'CORRECIONES'"
+          style="text-align: center"
+        >
+          <button
+            nz-button
+            (click)="createTplModal(tplTitle, tplContent, tplFooter)"
+          >
+            <i nz-icon nzType="eye" nzTheme="fill"></i>
+          </button>
+          <ng-template #tplTitle>Observaciones</ng-template>
+          <ng-template #tplContent>{{ data.observaciones }}</ng-template>
+          <ng-template #tplFooter let-ref="modalRef">
+            <button nz-button (click)="ref.destroy()">Cerrar</button>
+          </ng-template>
+          <button
+            *ngIf="data.estado === 'CORRECIONES'"
+            style="margin-left: 1em"
+            nz-button
+            (click)="editCorrecionSolicitud(data.id_solicitud)"
+          >
+            <i nz-icon nzType="edit" nzTheme="fill"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <b>{{ data.fc }}</b>
+      </td>
+      <td>
+        <b>{{ data.fa }}</b>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

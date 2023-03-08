@@ -1,0 +1,79 @@
+<h1>Editar Datos Estudiante</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada && flag_editar_datos_disabled">
+  <h2 style="color: crimson">
+    No puedes editar tus datos cuando tienes una solicitud activa
+  </h2>
+</div>
+
+<form
+  nz-form
+  [formGroup]="formulario"
+  (submit)="saveDatosEstudiante()"
+  *ngIf="pagina_cargada && flag_editar_datos_disabled === false"
+>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="facultad_origen">
+      <b>Facultad</b>
+    </nz-form-label>
+
+    <nz-form-control nzErrorTip="La facultad no es válida!">
+      <input
+        nz-input
+        type="text"
+        formControlName="facultad_origen"
+        id="facultad_origen"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="carrera_origen">
+      <b>Carrera</b>
+    </nz-form-label>
+
+    <nz-form-control nzErrorTip="La carrera no es válida!">
+      <input
+        nz-input
+        type="text"
+        formControlName="carrera_origen"
+        id="carrera_origen"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="nivel_origen">
+      <b>Nivel</b>
+    </nz-form-label>
+
+    <nz-form-control nzErrorTip="El nivel no es válido!">
+      <nz-select formControlName="nivel_origen" id="nivel_origen">
+        <nz-option
+          *ngFor="let nivel of niveles"
+          [nzLabel]="nivel"
+          [nzValue]="nivel"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <button
+      nz-button
+      nzType="primary"
+      [nzLoading]="btn_guardar_loading"
+      [disabled]="btn_guardar_disabled"
+    >
+      Guardar
+    </button>
+  </nz-form-item>
+</form>

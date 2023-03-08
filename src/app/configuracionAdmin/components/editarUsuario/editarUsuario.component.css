@@ -1,0 +1,15 @@
+[nz-form] {
+  max-width: 100vw;
+}
+
+nz-form-label {
+  width: 8vw;
+  text-align: left;
+}
+nz-select {
+  max-width: 25vw;
+}
+
+input {
+  max-width: 25vw;
+}

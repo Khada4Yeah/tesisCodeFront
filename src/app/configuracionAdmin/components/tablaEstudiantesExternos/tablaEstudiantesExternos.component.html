@@ -1,0 +1,88 @@
+<h1>Estudiantes Externos del Sistema</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<nz-table
+  *ngIf="pagina_cargada"
+  #tablaEstudiantesExternos
+  [nzData]="resultado_busqueda"
+  [nzPageSize]="7"
+  nzTableLayout="fixed"
+  nzSize="small"
+  [nzScroll]="{ y: 'auto', x: 'auto' }"
+>
+  <thead>
+    <tr>
+      <th nzCustomFilter>
+        Cédula
+        <nz-filter-trigger
+          [(nzVisible)]="flag_visible"
+          [nzActive]="cedula_buscar.length > 0"
+          [nzDropdownMenu]="menu"
+        >
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th>Apellidos</th>
+      <th>Nombres</th>
+      <th>Correo</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of tablaEstudiantesExternos.data">
+      <td>{{ data.cedula }}</td>
+      <td>{{ data.apellidos }}</td>
+      <td>{{ data.nombres }}</td>
+      <td>{{ data.correo_personal }}</td>
+      <td>{{ data.estado }}</td>
+      <td style="text-align: center">
+        <button nz-button nzType="primary">
+          <i nz-icon nzType="edit" nzTheme="fill"></i>
+        </button>
+        <nz-divider nzType="vertical" style="margin-left: 5px"></nz-divider>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="deleteEstudianteExterno(data.id)"
+          [disabled]="btn_eliminar_disabled"
+          [nzLoading]="btn_eliminar_loading"
+        >
+          <i nz-icon nzType="delete" nzTheme="fill"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input
+        type="text"
+        nz-input
+        placeholder="Cédula a buscar"
+        [(ngModel)]="cedula_buscar"
+      />
+      <button
+        nz-button
+        nzSize="small"
+        nzType="primary"
+        (click)="buscarCedula()"
+        class="search-button"
+      >
+        Buscar
+      </button>
+      <button nz-button nzSize="small" (click)="reiniciarBusqueda()">
+        Limpiar
+      </button>
+    </div>
+  </div>
+</nz-dropdown-menu>

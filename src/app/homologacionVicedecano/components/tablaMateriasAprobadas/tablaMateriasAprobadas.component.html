@@ -1,0 +1,36 @@
+<h1>Materias Aprobadas de</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada">
+  <nz-table
+    #basicTable
+    [nzData]="materias_aprobadas"
+    [nzPageSize]="11"
+    nzSize="small"
+    [nzScroll]="{ y: '55vh', x: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="35%">Malla</th>
+        <th nzWidth="30%">Materia</th>
+        <th nzWidth="20%">Nivel</th>
+        <th nzWidth="15%">Créditos Materia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.malla }}</td>
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td>{{ data.creditos }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

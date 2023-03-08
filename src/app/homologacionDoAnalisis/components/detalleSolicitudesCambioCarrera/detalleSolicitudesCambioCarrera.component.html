@@ -1,0 +1,132 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada">
+  <h1>Ánalisis Comparativo de Contenidos</h1>
+  <br />
+
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="5"
+    nzSize="small"
+    [nzScroll]="{ y: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="35%">Materia</th>
+        <th nzWidth="9%">Nivel</th>
+        <th nzWidth="10%">PDF Analizar</th>
+        <th>Análisis Realizado</th>
+        <th>Análisis Enviado</th>
+        <th nzWidth="30%">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of tablaSolicitudes.data; index as ig">
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td style="text-align: center">
+          <form>
+            <button type="submit" nz-button (click)="getPdf(data.pdf)">
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+          <div *ngIf="data.pdf === null || data.pdf === undefined">
+            <b>Sin archivo</b>
+          </div>
+        </td>
+        <td style="text-align: center">
+          <i
+            nz-icon
+            nzType="check-circle"
+            nzTheme="fill"
+            *ngIf="
+              data.estado === 'DATOS ESTABLECIDOS' ||
+              data.estado === 'INFORME COMPLETADO'
+            "
+          ></i>
+        </td>
+        <td style="text-align: center">
+          <i
+            nz-icon
+            nzType="check-circle"
+            nzTheme="fill"
+            *ngIf="
+              data.estado === 'INFORME COMPLETADO' ||
+              data.estado === 'INFORME COMPLETADO'
+            "
+          ></i>
+        </td>
+        <td>
+          <button
+            nz-button
+            nzType="primary"
+            class="acciones-btn-espaciado"
+            (click)="realizarAnalisisDocente(data.materia_id)"
+            [disabled]="data.pdf_analisis !== null"
+          >
+            Realizar Análisis
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <button
+    nz-button
+    nzType="primary"
+    class="btn-espaciado"
+    (click)="crearPdfAnalisis()"
+    [nzLoading]="btn_generar_pdf_analisis_loading"
+  >
+    Generar PDF Análisis
+  </button>
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    class="btn-espaciado"
+    (click)="crearModalUploadPdf(tplContent)"
+    [disabled]="btn_subir_analisis_disabled"
+  >
+    Subir PDF Análisis Firmado
+  </button>
+  <ng-template #tplContent>
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-label> PDF Generado con su Firma </nz-form-label>
+      </nz-form-item>
+      <nz-form-control>
+        <input
+          type="file"
+          accept=".pdf"
+          nz-input
+          nzBorderless
+          (change)="pdfComprobante($event)"
+        />
+      </nz-form-control>
+    </form>
+  </ng-template>
+  <br />
+
+  <button nz-button nzType="primary" (click)="paginaAnterior()">
+    Regresar
+  </button>
+</div>

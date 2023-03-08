@@ -1,0 +1,224 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada" #target>
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <nz-descriptions
+    nzBordered
+    [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+  >
+    <nz-descriptions-item nzTitle="Apellidos">
+      {{ solicitud_detallada[0].apellidos }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Nombres">
+      {{ solicitud_detallada[0].nombres }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Escuela Origen">
+      {{ solicitud_detallada[0].escuela_origen }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Escuela Destino">
+      {{ solicitud_detallada[0].escuela_destino }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Modalidad">
+      {{ solicitud_detallada[0].modalidad }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Estado Solicitud">
+      {{ solicitud_detallada[0].estado_solicitud }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Documentos">
+      <td style="text-align: center">
+        <form *ngIf="solicitud_detallada[0].documento_completo !== null">
+          <button
+            type="submit"
+            nz-button
+            [disabled]="btn_pdf_disabled"
+            (click)="getPdf(solicitud_detallada[0].documento_completo)"
+          >
+            <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+          </button>
+        </form>
+      </td>
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Fecha Creación">
+      {{ solicitud_detallada[0].fc }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item nzTitle="Fecha Actualización">
+      {{ solicitud_detallada[0].fa }}
+    </nz-descriptions-item>
+
+    <nz-descriptions-item
+      nzTitle="Materias Aprobadas"
+      *ngIf="solicitud_detallada[0].tipo === 'CAMBIO CARRERA'"
+    >
+      <a
+        nz-button
+        nzType="primary"
+        nzSize="large"
+        [routerLink]="[
+          '../../materiasAprobdas/',
+          solicitud_detallada[0].personal_id,
+          solicitud_detallada[0].idescuela,
+          solicitud_detallada[0].malla
+        ]"
+        target="_blank"
+        >Ver</a
+      >
+    </nz-descriptions-item>
+  </nz-descriptions>
+
+  <br />
+  <div
+    *ngIf="
+      solicitud_detallada[0].estado === 'RECHAZADA' ||
+      solicitud_detallada[0].estado === 'CORRECIONES'
+    "
+  >
+    <h4>Observaciones</h4>
+    <textarea
+      nz-input
+      [value]="solicitud_detallada[0].observaciones"
+      readonly
+      nzAutosize
+      resize="none"
+    ></textarea>
+  </div>
+
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="5"
+    nzSize="small"
+    [nzScroll]="{ y: 'auto', x: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th>Materia</th>
+        <th>Nivel</th>
+        <th>PDF</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of tablaSolicitudes.data">
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td>
+          <form *ngIf="data.documento_materia !== null">
+            <button
+              type="submit"
+              nz-button
+              (click)="getPdf(data.documento_materia)"
+              [disabled]="btn_pdf_disabled"
+            >
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    class="espaciado-btn"
+    (click)="createModalSeleccionarDepartamento(contenidoModalSetDepartamento)"
+    [disabled]="flag_habilita_botones[0]"
+  >
+    Asignar Departamento
+  </button>
+  <ng-template #contenidoModalSetDepartamento>
+    <input
+      type="text"
+      readonly
+      nz-input
+      [value]="
+        solicitud_detallada[0].departamento
+          ? solicitud_detallada[0].departamento
+          : 'SIN DEPARTAMENTO'
+      "
+      style="margin-bottom: 10px"
+    />
+    <br />
+
+    <nz-select nzShowSearch [(ngModel)]="id_departamento">
+      <nz-option
+        *ngFor="let iDepartamento of departamentos"
+        [nzLabel]="iDepartamento.nombre"
+        [nzValue]="iDepartamento.iddepartamento"
+      ></nz-option>
+    </nz-select>
+  </ng-template>
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    class="espaciado-btn"
+    (click)="confirmarEnviarRC()"
+    [disabled]="flag_habilita_botones[1]"
+    [nzLoading]="btn_enviar_recomision_loading"
+  >
+    Enviar a Responsable de la Comisión
+  </button>
+
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    [disabled]="flag_habilita_botones[2]"
+    class="espaciado-btn"
+    (click)="correctSolictud()"
+  >
+    Devolver para correción
+  </button>
+
+  <br />
+
+  <button
+    nz-button
+    nzType="primary"
+    nzDanger
+    (click)="showModal()"
+    [disabled]="flag_habilita_botones[3]"
+  >
+    Rechazar
+  </button>
+  <nz-modal
+    [(nzVisible)]="mostrarModal"
+    nzTitle="Rechazar Solicitud"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    [nzOkLoading]="btn_rechazar_loading"
+  >
+    <ng-container *nzModalContent>
+      <p><b>Detalle el motivo del rechazo de la solicitud</b></p>
+      <textarea rows="4" nz-input [(ngModel)]="observaciones"></textarea>
+    </ng-container>
+  </nz-modal>
+</div>

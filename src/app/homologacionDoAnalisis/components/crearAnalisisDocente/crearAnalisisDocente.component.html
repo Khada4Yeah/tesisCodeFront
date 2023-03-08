@@ -1,0 +1,153 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada" class="scrollable-container" #target>
+  <h1>Ánalisis Comparativo de Contenidos</h1>
+  <br />
+
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <form
+    nz-form
+    nzLayout="vertical"
+    [formGroup]="validacionFormulario"
+    (submit)="guardarDatos()"
+  >
+    <nz-form-item>
+      <nz-form-label><b>Materia del Análisis</b></nz-form-label>
+
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          readonly
+          style="width: 30em"
+          [value]="materias_solicitud[0].materia"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="materiaProcedencia">
+        <b>Nombre de la asignatura de la Institución de procedencia</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El texto ingresado no es válido!">
+        <input
+          type="text"
+          nz-input
+          style="width: 30em"
+          formControlName="materiaProcedencia"
+          id="materiaProcedencia"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="creditosProcedencia">
+        <b>N° Créditos U. Proviene</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-select
+          style="width: 5em"
+          formControlName="creditosProcedencia"
+          id="creditosProcedencia"
+        >
+          <nz-option
+            *ngFor="let iocc of opciones_cantidad_creditos"
+            [nzValue]="iocc"
+            [nzLabel]="iocc"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="aprobacionAsignatura">
+        <b>Año de Aprobación de la asignatura</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <nz-date-picker
+          nzMode="year"
+          formControlName="aprobacionAsignatura"
+          id="aprobacionAsignatura"
+          nzFormat="yyyy"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="porcentajeSimilitud">
+        <b>Porcentaje de similitud de contenidos</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <input
+          type="number"
+          nz-input
+          min="0"
+          max="100"
+          style="width: 7em"
+          formControlName="porcentajeSimilitud"
+          id="porcentajeSimilitud"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="notaAsentar">
+        <b>Nota que debe asentarse</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El valor ingresado no es válido!">
+        <input
+          type="number"
+          nz-input
+          min="0"
+          max="100"
+          style="width: 7em"
+          formControlName="notaAsentar"
+          id="notaAsentar"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="conclusionF">
+        <b>Conclusión Observación</b>
+      </nz-form-label>
+
+      <nz-form-control nzErrorTip="El texto ingresado no es válido!">
+        <textarea
+          nz-input
+          [nzAutosize]="{ minRows: 2, maxRows: 2 }"
+          formControlName="conclusionF"
+          id="conclusionF"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [nzLoading]="btn_form_loading">
+          Guardar Cambios
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <button nz-button nzType="primary" (click)="paginaAnterior()">
+    Regresar
+  </button>
+</div>

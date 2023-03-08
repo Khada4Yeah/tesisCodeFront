@@ -1,0 +1,11 @@
+.scrollable-container {
+  /* height: 900px;
+  overflow-y: scroll; */
+  overflow-x: scroll;
+}
+
+.background {
+  padding-top: 60px;
+  height: 300px;
+  background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);
+}

@@ -1,0 +1,66 @@
+<h1>Solicitudes Creadas</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<nz-table
+  #tablaSolicitudes
+  [nzData]="solicitudes"
+  *ngIf="pagina_cargada"
+  [nzScroll]="{ y: 'auto', x: 'auto' }"
+  [nzPageSize]="4"
+>
+  <thead>
+    <tr>
+      <th nzWidth="22%">Escuela Origen</th>
+      <th nzWidth="22%">Escuela Destino</th>
+      <th nzWidth="10%">Modalidad</th>
+      <th nzWidth="8%">PDF</th>
+      <th>Fecha de Creación</th>
+      <th>Fecha de Actualización</th>
+      <th nzWidth="10%">Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let data of tablaSolicitudes.data">
+      <td>{{ data.escuela_origen }}</td>
+      <td>{{ data.escuela_destino }}</td>
+      <td>{{ data.modalidad }}</td>
+      <td style="text-align: center">
+        <form>
+          <button
+            type="submit"
+            nz-button
+            (click)="getPdf(data.documento)"
+            [disabled]="btn_pdf_disabled"
+          >
+            <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+          </button>
+        </form>
+      </td>
+      <td>
+        <b>{{ data.fc }}</b>
+      </td>
+      <td>
+        <b>{{ data.fa }}</b>
+      </td>
+      <td
+        *ngIf="data.documento_completo === null && data.estado === 'GENERADA'"
+      >
+        <button
+          nz-button
+          nzType="primary"
+          (click)="editSolicitud(data.id_solicitud)"
+        >
+          <i nz-icon nzType="edit" nzTheme="outline"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

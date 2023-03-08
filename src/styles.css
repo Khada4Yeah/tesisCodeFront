@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.afu-upload-btn {
+  max-width: 100px;
+  max-height: 35px;
+}
+
+.example {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}

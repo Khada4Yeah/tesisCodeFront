@@ -1,0 +1,144 @@
+<h1>Editar Usuario</h1>
+<hr />
+
+<div class="mt-1 mb-3">
+  <nz-alert
+    nzType="success"
+    nzMessage="Usuario guardado correctamente. Redireccionando a Usuarios del Sistema."
+    nzShowIcon
+    *ngIf="status == 'success'"
+  ></nz-alert>
+
+  <nz-alert
+    nzType="error"
+    nzMessage="Usuario no guardado. Redireccionando a Usuarios del Sistema."
+    nzShowIcon
+    *ngIf="status == 'error'"
+  ></nz-alert>
+</div>
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!flag_pagina_cargada"
+></nz-spin>
+
+<form
+  nz-form
+  #usuarioForm="ngForm"
+  *ngIf="flag_pagina_cargada"
+  (ngSubmit)="onSubmit(usuarioForm)"
+>
+  <nz-form-item>
+    <nz-form-label><b>Apellidos</b></nz-form-label>
+
+    <nz-form-control>
+      <input
+        nz-input
+        type="text"
+        readonly
+        name="apellidos"
+        #apellidos="ngModel"
+        [(ngModel)]="usuario.apellidos"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label><b>Nombres</b></nz-form-label>
+
+    <nz-form-control>
+      <input
+        nz-input
+        type="text"
+        readonly
+        name="nombres"
+        #nombres="ngModel"
+        [(ngModel)]="usuario.nombres"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label><b>Cargo</b></nz-form-label>
+    <nz-form-control>
+      <nz-select
+        nzShowSearch
+        name="cargo"
+        nzPlaceHolder="Seleccione un Cargo"
+        #cargo="ngModel"
+        [(ngModel)]="usuario.cargos_id"
+        required
+      >
+        <nz-option
+          *ngFor="let icargo of cargos"
+          [nzLabel]="icargo.cargo"
+          [nzValue]="icargo.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="usuario.personal_id != 0 && usuario.cargos_id === 2">
+    <nz-form-label><b>Departamento</b></nz-form-label>
+
+    <nz-form-control>
+      <nz-select
+        nzShowSearch
+        name="departamento"
+        nzPlaceHolder="Seleccione un Departamento"
+        #departamento="ngModel"
+        [(ngModel)]="usuario.departamento_id"
+        required
+      >
+        <nz-option
+          *ngFor="let idepartamento of departamentos"
+          [nzLabel]="idepartamento.nombre"
+          [nzValue]="idepartamento.iddepartamento"
+        >
+        </nz-option>
+      </nz-select>
+
+      <small
+        class="invalid-feedback d-block"
+        *ngIf="!departamento.valid && departamento.touched"
+        >El departamentoo no es válido
+      </small>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label><b>Estado</b></nz-form-label>
+
+    <nz-form-control>
+      <nz-select
+        name="estado"
+        #estado="ngModel"
+        [(ngModel)]="usuario.estado"
+        required
+      >
+        <nz-option nzValue="H" nzLabel="Habilitado"></nz-option>
+        <nz-option nzValue="D" nzLabel="Deshabilitado"></nz-option>
+      </nz-select>
+      <small
+        class="invalid-feedback d-block"
+        *ngIf="!estado.valid && estado.touched"
+        >El estado no es válido
+      </small>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <button
+        type="submit"
+        nz-button
+        [nzType]="'primary'"
+        [disabled]="usuarioForm.invalid || flag_form_send"
+      >
+        Guardar
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -1,0 +1,39 @@
+*** CAMBIO CARRERA */
+?CREAR Solicitud /?
+Solicitud creada con éxito!
+Error al crear la solicitud...
+
+?EDITAR Solicitd /?
+Solicitud actualizada con éxito!
+Error al actualizar la solicitud...
+
+
+
+
+*** VARIABLES BOTONES */
+btn_pdf_disabled
+this._mensaje.loading('Obteniendo archivo...', { nzDuration: 0 });
+
+decryptId() {
+    this._urlService.desencriptarParametro(this.getIdSolicitud()).subscribe(
+      (id) => {
+        if (id !== '') {
+          this.id_solicitud = Number(id);
+        } else {
+          this._router.navigate(['error']);
+        }
+      },
+      (error) => {
+        this._router.navigate(['error']);
+      },
+      () => {
+        this.getDetalleSolicitud();
+      }
+    );
+  }
+
+
+
+TAMANIOS
+SELECT CAMBIAR PERFIL 20 vw
+ESPACIADO BOTONES FINAL 10px

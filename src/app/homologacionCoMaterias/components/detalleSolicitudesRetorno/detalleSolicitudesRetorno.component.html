@@ -1,0 +1,65 @@
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!pagina_cargada"
+></nz-spin>
+
+<div *ngIf="pagina_cargada" #target>
+  <h2>
+    Solicitud de
+    {{
+      solicitud_detallada[0].apellidos + " " + solicitud_detallada[0].nombres
+    }}
+  </h2>
+  <br />
+
+  <h3>Materias a homologar</h3>
+
+  <nz-table
+    #tablaSolicitudes
+    [nzData]="materias_solicitud"
+    [nzPageSize]="5"
+    nzSize="small"
+    [nzScroll]="{ y: 'auto' }"
+  >
+    <thead>
+      <tr>
+        <th>Materia</th>
+        <th>Nivel</th>
+        <th>PDF Análisis</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of tablaSolicitudes.data">
+        <td>{{ data.materia }}</td>
+        <td>{{ data.nivel }}</td>
+        <td style="text-align: center">
+          <form>
+            <button
+              nz-button
+              (click)="getPdf(data.pdf_analisis)"
+              [disabled]="btn_pdf_disabled"
+            >
+              <i nz-icon nzType="file-pdf" nzTheme="fill"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <button
+    nz-button
+    nzType="primary"
+    class="espaciado-btn"
+    [disabled]="verifyCheckCm()"
+    (click)="returnReComision()"
+  >
+    Enviar al Responsable de la Comisión
+  </button>
+  <br />
+  <!-- 
+  <button nz-button nzType="primary" (click)="">Regresar</button> -->
+</div>

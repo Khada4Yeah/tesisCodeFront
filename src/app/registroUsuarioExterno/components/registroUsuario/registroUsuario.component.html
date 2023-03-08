@@ -1,0 +1,213 @@
+<div nz-row>
+  <div class="contenido">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <nz-spin
+            class="example"
+            nzSimple
+            [nzSize]="'large'"
+            *ngIf="!pagina_cargada"
+          ></nz-spin>
+
+          <div *ngIf="pagina_cargada">
+            <div class="logo">
+              <img src="assets/images/logo-actual.png" />
+              <span
+                ><b
+                  >Sistema de Homologación Universidad Técnica de Manabí</b
+                ></span
+              >
+            </div>
+
+            <h1>Registro de Usuario</h1>
+            <hr />
+
+            <form
+              nz-form
+              (ngSubmit)="onSubmit()"
+              [formGroup]="validar_formulario"
+            >
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="cedula">
+                  <b>Cédula</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="La cédula no es válida!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="cedula"
+                    id="cedula"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="apellido_p">
+                  <b>Apellido Paterno</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="El apellido paterno no es válido!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="apellido_p"
+                    id="apellido_p"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="apellido_m">
+                  <b>Apellido Materno</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="El apellido materno no es válido!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="apellido_m"
+                    id="apellido_m"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="nombres">
+                  <b>Nombres</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="El nombre no es válido!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="nombres"
+                    id="nombres"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="fecha_nacimiento">
+                  <b>Fecha de Nacimiento</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="La fecha no es válida!">
+                  <nz-date-picker
+                    formControlName="fecha_nacimiento"
+                    id="fecha_nacimiento"
+                    nzFormat="yyyy-MM-dd"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="celular">
+                  <b>Celular</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="El celular no es válido!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="celular"
+                    id="celular"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="telefono_convencional">
+                  <b>Teléfono Conv.</b>
+                </nz-form-label>
+
+                <nz-form-control
+                  nzErrorTip="El teléfono convencional no es válido!"
+                >
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="telefono_convencional"
+                    id="telefono_convencional"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="direccion">
+                  <b>Dirección</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="La dirección no es válida!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="direccion"
+                    id="direccion"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="correo_personal">
+                  <b>Correo Personal</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="El correo no es válido!">
+                  <input
+                    nz-input
+                    type="text"
+                    formControlName="correo_personal"
+                    id="correo_personal"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="clave">
+                  <b>Contraseña</b>
+                </nz-form-label>
+
+                <nz-form-control nzErrorTip="La contraseña no es válida!">
+                  <nz-input-group [nzSuffix]="suffixTemplate">
+                    <input
+                      [type]="passwordVisible ? 'text' : 'password'"
+                      nz-input
+                      formControlName="clave"
+                      id="clave"
+                    />
+                  </nz-input-group>
+                  <ng-template #suffixTemplate>
+                    <i
+                      nz-icon
+                      [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                      (click)="passwordVisible = !passwordVisible"
+                    ></i>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-control>
+                  <div nz-row [nzGutter]="[10, 10]">
+                    <div nz-col>
+                      <button nz-button nzType="primary">Registrarse</button>
+                    </div>
+
+                    <div nz-col>
+                      <button nz-button (click)="regresarLogin($event)">
+                        Regresar
+                      </button>
+                    </div>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

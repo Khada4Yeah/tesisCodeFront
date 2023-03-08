@@ -1,0 +1,84 @@
+<h1>Envío de Solicitud para Cambio de Carrera</h1>
+<hr />
+
+<nz-spin
+  class="example"
+  nzSimple
+  [nzSize]="'large'"
+  *ngIf="!flag_pagina_cargada"
+></nz-spin>
+
+<div *ngIf="flag_pagina_cargada && flag_solicitud_generada === false">
+  <h2 style="color: crimson">
+    Primero debes crear una solicitud / Ya tienes una solicitud en revisión
+  </h2>
+</div>
+
+<div *ngIf="flag_pagina_cargada && flag_solicitud_generada">
+  <form (submit)="onSubmit()">
+    <h2>Carga de documentos PDF</h2>
+    <p>
+      <b>
+        * Comprobante de aceptación de cupo en la carrera de procedencia. Que
+        incluya la nota de postulación.
+        <br />
+        * Solicitud generada debidamente firmada.
+        <br />
+        * Un solo archivo PDF (4 MB Max.)
+      </b>
+    </p>
+    <input
+      type="file"
+      accept=".pdf"
+      style="margin-bottom: 2em"
+      (change)="pdfComprobante($event)"
+    />
+
+    <p>
+      <b
+        >* Cargar en cada fila la respectiva documentación de cada materia (2 MB
+        Max.)</b
+      >
+    </p>
+
+    <nz-table
+      #tablaMaterias
+      [nzData]="materias_solicitud"
+      [nzPageSize]="7"
+      nzSize="small"
+      [nzScroll]="{ y: 'auto' }"
+    >
+      <thead>
+        <tr>
+          <th>Materia</th>
+          <th>Nivel</th>
+          <th>PDF</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of tablaMaterias.data">
+          <input type="hidden" [value]="data.idmateria" />
+          <td>{{ data.materia }}</td>
+          <td>{{ data.nivel }}</td>
+          <td>
+            <input
+              type="file"
+              accept=".pdf"
+              (change)="archivosSeleccionado($event, data.idmateria)"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <button
+      nz-button
+      nzType="primary"
+      type="submit"
+      [disabled]="btn_enviar_form_disabled"
+      [nzLoading]="btn_enviar_form_loading"
+    >
+      Enviar
+    </button>
+  </form>
+</div>
